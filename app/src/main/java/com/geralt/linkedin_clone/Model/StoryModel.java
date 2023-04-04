@@ -2,6 +2,14 @@ package com.geralt.linkedin_clone.Model;
 
 public class StoryModel {
 
+    private String storyImg;
+    private long timeStart;
+    private String storyId;
+    private String msg;
+    private long timeEnd;
+    private String userId;
+     private String timeUpload;
+
     public StoryModel(String storyImg, long timeStart, long timeEnd, String userId, String storyId, String timeUpload){
         this.storyImg = storyImg;
         this.timeStart = timeStart;
@@ -33,30 +41,12 @@ public class StoryModel {
         return timeUpload;
     }
 
-    private String storyImg;
-    private long timeStart;
-
-
-    private String storyId;
-
-
     public StoryModel() {
 
     }
 
-
-    private String msg;
-
-    private long timeEnd;
-    private String userId;
-
     public String getUserId() {
         return userId;
     }
-
-
-    private String timeUpload;
-
-
 
 }
