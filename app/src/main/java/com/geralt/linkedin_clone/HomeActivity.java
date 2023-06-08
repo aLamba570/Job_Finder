@@ -1,23 +1,27 @@
 package com.geralt.linkedin_clone;
 
 
-
-import androidx.annotation.NonNull;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
+import static com.geralt.linkedin_clone.R.anim;
+import static com.geralt.linkedin_clone.R.id;
+import static com.geralt.linkedin_clone.R.id.nav_home;
+import static com.geralt.linkedin_clone.R.id.nav_jobs;
+import static com.geralt.linkedin_clone.R.id.nav_network;
+import static com.geralt.linkedin_clone.R.id.nav_notification;
+import static com.geralt.linkedin_clone.R.id.nav_uplod;
+import static com.geralt.linkedin_clone.R.layout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-
+import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.geralt.linkedin_clone.Fragments.HomeFragment;
@@ -37,7 +41,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.geralt.linkedin_clone.Constants;
 import com.google.firebase.database.ValueEventListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -46,7 +49,6 @@ public class HomeActivity extends BaseActivity {
 
     DrawerLayout drawerLayout;
     FirebaseUser user;
-    UserModel userModel;
 
     ImageView profileImg, messageBtn, nav_img, nav_close_img;
     NavigationView navigationView;
@@ -59,38 +61,34 @@ public class HomeActivity extends BaseActivity {
     AppSharedPreferences appSharedPreferences;
 
     UserModel model;
-    public static final String USER_CONSTANT = "Users";
 
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(layout.activity_home);
 
         appSharedPreferences = new AppSharedPreferences(this);
         user = FirebaseAuth.getInstance().getCurrentUser();
         userRef = FirebaseDatabase.getInstance().getReference().child(Constants.USER_CONSTANT).child(user.getUid());
-        drawerLayout = findViewById(R.id.drawerLayout);
-        profileImg = findViewById(R.id.img);
-        messageBtn = findViewById(R.id.messageBtn);
-        navigationView = findViewById(R.id.nav_view);
+        drawerLayout = findViewById(id.drawerLayout);
+        profileImg = findViewById(id.img);
+        messageBtn = findViewById(id.messageBtn);
+        navigationView = findViewById(id.nav_view);
 
         UniversalImageLoderClass universalImageLoderClass = new UniversalImageLoderClass(this);
         ImageLoader.getInstance().init(universalImageLoderClass.getConfig());
 
         View header = navigationView.getHeaderView(0);
-        nav_name = header.findViewById(R.id.user_name);
-        nav_img = header.findViewById(R.id.img);
-        nav_close_img = header.findViewById(R.id.close_img);
-        tt = header.findViewById(R.id.tt);
+        nav_name = header.findViewById(id.user_name);
+        nav_img = header.findViewById(id.img);
+        nav_close_img = header.findViewById(id.close_img);
+        tt = header.findViewById(id.tt);
 
-        tt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent k = new Intent(HomeActivity.this, ProfileActivity.class);
-                startActivity(k);
-                finish();
-            }
+        tt.setOnClickListener(v -> {
+            Intent k = new Intent(HomeActivity.this, ProfileActivity.class);
+            startActivity(k);
+            finish();
         });
 
         Glide.with(this).load(appSharedPreferences.getImgUrl()).into(profileImg);
@@ -99,12 +97,9 @@ public class HomeActivity extends BaseActivity {
 
 
         //navbar close button
-        nav_close_img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (drawerLayout.isDrawerOpen(GravityCompat.START)){
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                }
+        nav_close_img.setOnClickListener(v -> {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+                drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
 
@@ -118,52 +113,47 @@ public class HomeActivity extends BaseActivity {
 
 
         // Open Message Activity
-        messageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(HomeActivity.this, MessageActivity.class);
-                startActivity(i);
-            }
+        messageBtn.setOnClickListener(v -> {
+            Intent i = new Intent(HomeActivity.this, MessageActivity.class);
+            startActivity(i);
         });
 
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                // Handle navigation item selection here
-                switch (item.getItemId()) {
-                    case R.id.nav_home:
-                        selectedFragment = new HomeFragment();
-                        break;
-                    case R.id.nav_network:
-                        selectedFragment = new NetworkFragment();
-                        startActivity(new Intent(HomeActivity.this, SharepostActivity.class));
-                        overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
-                        break;
-                    case R.id.nav_uplod:
-                        selectedFragment = null;
-                        break;
-                    case R.id.nav_notification:
-                        selectedFragment = new NotificationFragment();
-                        break;
-                    case R.id.nav_jobs:
-                        selectedFragment = new JobsFragment();
-                        break;
-                }
-                if (selectedFragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
-                }
-
-                return true;
+        bottomNavigationView = findViewById(id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            // Handle navigation item selection here
+            switch (item.getItemId()) {
+                case nav_home:
+                    selectedFragment = new HomeFragment();
+                    break;
+                case nav_network:
+                    selectedFragment = new NetworkFragment();
+                    startActivity(new Intent(HomeActivity.this, SharepostActivity.class));
+                    overridePendingTransition(anim.slide_up, anim.slide_down);
+                    break;
+                case nav_uplod:
+                    selectedFragment = null;
+                    break;
+                case nav_notification:
+                    selectedFragment = new NotificationFragment();
+                    break;
+                case nav_jobs:
+                    selectedFragment = new JobsFragment();
+                    break;
             }
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(id.frame_layout, selectedFragment).commit();
+            }
+
+            return true;
         });
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new HomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(id.frame_layout, new HomeFragment()).commit();
 
         userRef.child("Info").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 model = snapshot.getValue(UserModel.class);
+                assert model != null;
                 appSharedPreferences.setUsername(model.getUsername());
                 appSharedPreferences.setImgUrl(model.getImageUrl());
             }
@@ -178,12 +168,12 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        BottomNavigationView mBottomNavigationView = findViewById(R.id.bottomNavigationView);
-        if (mBottomNavigationView.getSelectedItemId() == R.id.nav_home) {
+        BottomNavigationView mBottomNavigationView = findViewById(id.bottomNavigationView);
+        if (mBottomNavigationView.getSelectedItemId() == nav_home) {
             super.onBackPressed();
             finish();
         } else {
-            mBottomNavigationView.setSelectedItemId(R.id.nav_home);
+            mBottomNavigationView.setSelectedItemId(nav_home);
         }
     }
 }

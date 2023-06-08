@@ -29,7 +29,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/arrow_back"/>
+                    android:src="@drawable/arrow_back"
+                    android:contentDescription="@string/backarrow" />
                 
                 <TextView
                     android:layout_width="match_parent"
@@ -49,7 +50,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/more_vertical" />
+                    android:src="@drawable/more_vertical"
+                    android:contentDescription="@string/more" />
 
             </RelativeLayout>
 
@@ -78,14 +80,45 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/item_card_parent"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             app:cardElevation="0dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="48dp">
+
+                <EditText
+                    android:id="@+id/search"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_toEndOf="@+id/item_search_icon"
+                    android:autofillHints="name"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/searchMessage"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="#757575"
+                    android:textSize="16sp" />
+
+
+                <ImageView
+                    android:id="@+id/item_search_icon"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:src="@drawable/ic_search_black_24dp"
+                    app:tint="#D7797979"
+                    android:contentDescription="@string/search" />
+
 
             </RelativeLayout>
 
@@ -93,6 +126,24 @@
         </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/item_search_holder"
+        android:layout_centerHorizontal="true"
+        android:background="#B2C5C1C1" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/user_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view1"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:overScrollMode="never"
+        tools:listitem="@layout/card_usermessage" />
 
 
 

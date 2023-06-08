@@ -12,5 +12,11 @@
     <string name="profile">Profile</string>
     <string name="messages">Messages</string>
     <string name="message">Messaging</string>
+    <string name="searchMessage">Search Messages</string>
     <string name="about">I am an experienced Android Application Developer with a strong background in the computer software industry. My skills include Firebase, Java, Android Development, and Project Management. I have a proven track record of delivering successful projects. Currently, I am actively seeking internship opportunities to further enhance my skills and contribute to innovative projects.</string>
+    <string name="search">search</string>
+    <string name="more">more</string>
+    <string name="backarrow">backArrow</string>
+    <string name="user">USER</string>
+    <string name="hello">hello</string>
 </resources>
