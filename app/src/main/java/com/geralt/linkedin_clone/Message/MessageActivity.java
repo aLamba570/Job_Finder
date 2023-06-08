@@ -65,6 +65,8 @@ public class MessageActivity extends AppCompatActivity {
                 adapter = new MessageAdapter(MessageActivity.this, list);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+
+
             }
 
             @Override
