@@ -32,25 +32,25 @@
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/header_title"/>
 
-        <com.google.android.material.appbar.AppBarLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bottom"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true">
-
+            android:layout_height="match_parent">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_navigation_bar"
-                app:itemBackground="@drawable/outline_checked_state"
-                app:itemIconTint="@color/color"
-                app:itemTextColor="@color/color"
-                app:labelVisibilityMode="labeled"
-                app:menu="@menu/bottom_nav_bar"
+                android:id="@+id/bottomNavigationView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.appbar.AppBarLayout>
+                android:background="@color/white"
+                android:layout_height="52dp"
+                android:layout_marginTop="676dp"
+                app:menu="@menu/bottom_nav_bar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </RelativeLayout>
@@ -65,9 +65,5 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/extract_header" />
 
-
-
-
-    
 
 </androidx.drawerlayout.widget.DrawerLayout>

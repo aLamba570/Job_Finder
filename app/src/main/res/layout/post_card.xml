@@ -123,15 +123,15 @@
         </RelativeLayout>
 
 
-        <com.luseen.autolinklibrary.AutoLinkTextView
-            android:id="@+id/text_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/roboto_light"
-            android:textColor="@color/black"
-            tools:text="@tools:sample/lorem/random" />
+<!--        <com.luseen.autolinklibrary.AutoLinkTextView-->
+<!--            android:id="@+id/text_1"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:fontFamily="@font/roboto_light"-->
+<!--            android:textColor="@color/black"-->
+<!--            tools:text="@tools:sample/lorem/random" />-->
 
 
         <androidx.cardview.widget.CardView

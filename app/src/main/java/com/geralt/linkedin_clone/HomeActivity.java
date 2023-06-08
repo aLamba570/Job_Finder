@@ -11,13 +11,19 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 
+
+
 import com.bumptech.glide.Glide;
 import com.geralt.linkedin_clone.Fragments.HomeFragment;
+import com.geralt.linkedin_clone.Fragments.JobsFragment;
+import com.geralt.linkedin_clone.Fragments.NetworkFragment;
+import com.geralt.linkedin_clone.Fragments.NotificationFragment;
 import com.geralt.linkedin_clone.Message.MessageActivity;
 import com.geralt.linkedin_clone.Model.UserModel;
 import com.geralt.linkedin_clone.Profile.ProfileActivity;
@@ -120,8 +126,38 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation_bar);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                // Handle navigation item selection here
+                switch (item.getItemId()) {
+                    case R.id.nav_home:
+                        selectedFragment = new HomeFragment();
+                        break;
+                    case R.id.nav_network:
+                        selectedFragment = new NetworkFragment();
+                        startActivity(new Intent(HomeActivity.this, SharepostActivity.class));
+                        overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                        break;
+                    case R.id.nav_uplod:
+                        selectedFragment = null;
+                        break;
+                    case R.id.nav_notification:
+                        selectedFragment = new NotificationFragment();
+                        break;
+                    case R.id.nav_jobs:
+                        selectedFragment = new JobsFragment();
+                        break;
+                }
+                if (selectedFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
+                }
+
+                return true;
+            }
+        });
+
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new HomeFragment()).commit();
 
         userRef.child("Info").addValueEventListener(new ValueEventListener() {
@@ -140,34 +176,9 @@ public class HomeActivity extends BaseActivity {
 
     }
 
-    private final BottomNavigationView.OnNavigationItemReselectedListener navigationItemSelectedListener =
-            item -> {
-                switch (item.getItemId()) {
-                    case R.id.nav_home:
-                        selectedFragment = new HomeFragment();
-                        break;
-                    case R.id.nav_network:
-                        selectedFragment = null;
-                        break;
-                    case R.id.nav_uplod:
-                        selectedFragment = null;
-                        break;
-                    case R.id.nav_notification:
-                        selectedFragment = null;
-                        break;
-                    case R.id.nav_jobs:
-                        selectedFragment = null;
-                        break;
-                }
-                if (selectedFragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
-                }
-                return true;
-            };
-
     @Override
     public void onBackPressed() {
-        BottomNavigationView mBottomNavigationView = findViewById(R.id.bottom_navigation_bar);
+        BottomNavigationView mBottomNavigationView = findViewById(R.id.bottomNavigationView);
         if (mBottomNavigationView.getSelectedItemId() == R.id.nav_home) {
             super.onBackPressed();
             finish();
