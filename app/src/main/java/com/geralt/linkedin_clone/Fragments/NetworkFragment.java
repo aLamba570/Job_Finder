@@ -123,7 +123,7 @@ public class NetworkFragment extends Fragment {
                     }
                 }
                 Collections.reverse(list);
-                adapter = new NetworkAdapter(getActivity(), connectionList);
+                adapter = new NetworkAdapter(getActivity(), connectionList, aCtx, connectionList1);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }

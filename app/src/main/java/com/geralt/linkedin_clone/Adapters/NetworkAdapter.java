@@ -1,5 +1,6 @@
 package com.geralt.linkedin_clone.Adapters;
 
+import android.content.Context;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,7 +12,12 @@ import com.geralt.linkedin_clone.Model.UserModel;
 import java.util.List;
 
 public class NetworkAdapter extends RecyclerView.Adapter {
-    public NetworkAdapter(FragmentActivity activity, List<UserModel> connectionList) {
+
+    private final Context aCtx;
+    private final List<UserModel> connectionList;
+    public NetworkAdapter(FragmentActivity activity, List<UserModel> connectionList, Context aCtx, List<UserModel> connectionList1) {
+        this.aCtx = aCtx;
+        this.connectionList = connectionList1;
     }
 
     @NonNull
