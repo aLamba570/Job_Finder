@@ -1,66 +1,137 @@
 package com.geralt.linkedin_clone.Fragments;
 
+import static com.geralt.linkedin_clone.Constants.INFO;
+import static com.geralt.linkedin_clone.Constants.REQUEST;
+import static com.geralt.linkedin_clone.Constants.USER_CONSTANT;
+
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.geralt.linkedin_clone.Adapters.NetworkAdapter;
+import com.geralt.linkedin_clone.Adapters.RequestAdapter;
+import com.geralt.linkedin_clone.Model.RequestModel;
+import com.geralt.linkedin_clone.Model.UserModel;
 import com.geralt.linkedin_clone.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NetworkFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class NetworkFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    List<RequestModel> list;
+    List<UserModel> connectionList;
+    NetworkAdapter adapter;
+    RequestAdapter requestAdapter;
+    RecyclerView recyclerView, requestRecyclerView;
+    DatabaseReference ref;
+    FirebaseUser user;
+    private List<String> requestList;
 
     public NetworkFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NetworkFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NetworkFragment newInstance(String param1, String param2) {
-        NetworkFragment fragment = new NetworkFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_network, container, false);
+        View view = inflater.inflate(R.layout.fragment_network, container, false);
+        recyclerView = view.findViewById(R.id.recycler_network);
+        requestRecyclerView = view.findViewById(R.id.request_recyclerView);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        ref = FirebaseDatabase.getInstance().getReference();
+
+        list = new ArrayList<>();
+        requestList = new ArrayList<>();
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //Network RecyclerView
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        recyclerView.setNestedScrollingEnabled(false);
+
+        //Request RecyclerView
+        requestRecyclerView.setHasFixedSize(true);
+        requestRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        requestRecyclerView.setNestedScrollingEnabled(false);
+        
+        readUsers();
+        GetAllUsersId();
+    }
+
+    private void GetAllUsersId() {
+        requestList = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(USER_CONSTANT).child(user.getUid()).child(REQUEST);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                requestList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    requestList.add(dataSnapshot.getKey());
+                }
+                readRequest();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                
+            }
+
+        });
+    }
+
+    private void readRequest() {
+    }
+
+    private void readUsers() {
+        connectionList = new ArrayList<>();
+        ref.child(USER_CONSTANT).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                connectionList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    UserModel model = dataSnapshot.child(INFO).getValue(UserModel.class);
+                    if (!model.getKey().equals(user.getUid())) {
+                        connectionList.add(model);
+                    }
+                }
+                Collections.reverse(list);
+                adapter = new NetworkAdapter(getActivity(), connectionList);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
     }
 }
