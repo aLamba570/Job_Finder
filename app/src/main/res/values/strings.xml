@@ -19,4 +19,6 @@
     <string name="backarrow">backArrow</string>
     <string name="user">USER</string>
     <string name="hello">hello</string>
+    <string name="try_free_for_1_month">Try Free for 1 Month</string>
+    <string name="premium">Try Premium to see jobs where you would be a top applicant</string>
 </resources>
