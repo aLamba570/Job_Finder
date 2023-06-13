@@ -3,6 +3,9 @@
 
     <application>
         <activity
+            android:name=".UserActivity"
+            android:exported="false" />
+        <activity
             android:name=".SharepostActivity"
             android:exported="false" />
         <activity
