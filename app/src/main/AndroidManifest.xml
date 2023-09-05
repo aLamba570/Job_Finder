@@ -3,6 +3,9 @@
 
     <application>
         <activity
+            android:name=".Profile.EditProfileIntroActivity"
+            android:exported="false" />
+        <activity
             android:name=".UserActivity"
             android:exported="false" />
         <activity
